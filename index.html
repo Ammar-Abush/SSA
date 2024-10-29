@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+
+        li a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        li a:hover {
+            text-decoration: underline;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete{
+            background-color: red;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .no-documents {
+            text-align: center;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>File Upload</h1>
+        <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                {% if form %}
+                    {% if form.files.errors %}
+                        <div class="error-message">
+                            {% for error in form.files.errors %}
+                                <span>{{ error }}</span><br>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <label for="docfile">Upload Files:</label>
+                    <input type="file" name="docfile" multiple>
+                {% endif %}
+            </div>
+            <button type="submit">Upload</button>
+        </form>
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+        {% if documents %}
+            <ul>
+            {% for document in documents %}
+                <li>{{ document.docfile.name }}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-documents">No documents uploaded.</p>
+        {% endif %}
+
+
+       
+    </div>
+</body>
+</html>
